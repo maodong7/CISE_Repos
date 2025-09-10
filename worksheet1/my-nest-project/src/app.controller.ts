@@ -7,6 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    // 新增测试注释，用于 PR 演示
     return this.appService.getHello();
   }
 }
