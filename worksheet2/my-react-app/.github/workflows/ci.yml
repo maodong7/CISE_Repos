@@ -3,16 +3,25 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [16.x] # 升级 Node.js 版本，适配更多现代项目
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - uses: actions/checkout@v3 # 升级 checkout action 版本
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm test
+        cache: 'npm' # 缓存 npm 依赖，加速后续运行
+    - name: Install Dependencies
+      run: npm ci
+    - name: Run Linting
+      run: npm run lint # 假设项目有 lint 脚本，提前做代码规范检查
+    - name: Run Tests
+      run: npm test -- --coverage # 生成测试覆盖率报告
+    - name: Upload Test Coverage
+      uses: codecov/codecov-action@v3 # 上传测试覆盖率到 Codecov（若使用该服务）
+      with:
+        fail_ci_if_error: true
