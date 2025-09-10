@@ -1,0 +1,19 @@
+name: React Test Workflow # 工作流名称，可自定义
+on:
+  push:
+    branches:
+      - main # 这里设置为当向 main 分支推送代码时触发工作流，你也可以根据需求改为 pull_request 等其他事件及分支
+jobs:
+  test:
+    runs-on: ubuntu-latest # 运行工作流的环境，这里选择最新的 Ubuntu 系统
+    steps:
+      - name: Checkout code # 步骤名称，可自定义
+        uses: actions/checkout@v2 # 使用官方的检出代码 action，拉取仓库代码到运行环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v3 # 使用官方的设置 Node.js 环境的 action
+        with:
+          node-version: 12.x # 设置使用的 Node.js 版本
+      - name: Install dependencies
+        run: npm ci # 运行 npm ci 安装项目依赖
+      - name: Run tests
+        run: npm test # 运行 npm test 执行测试命令
