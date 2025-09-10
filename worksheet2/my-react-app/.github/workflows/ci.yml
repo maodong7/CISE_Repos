@@ -1,17 +1,18 @@
 name: CI
 on:
-  pull_request:  # 当有拉取请求（PR）时触发
-    branches: [main]  # 只针对目标分支为 main 的 PR 触发
+  pull_request:
+    branches: [main]
 jobs:
   build:
-    runs-on: ubuntu-latest  # 运行在 Ubuntu 系统的虚拟机器上
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
-    - uses: actions/checkout@v3  # 第一步：检出仓库代码
-    - name: Set up Node.js
-      uses: actions/setup-node@v3  # 第二步：配置 Node.js 环境
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
       with:
-        node-version: 16  # 指定 Node.js 版本（可根据项目调整）
-    - name: Install dependencies
-      run: npm install  # 第三步：安装项目依赖
-    - name: Run tests
-      run: npm test  # 第四步：运行测试脚本
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm test
