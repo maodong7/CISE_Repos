@@ -1,0 +1,17 @@
+name: CI
+on:
+  pull_request:
+    branches: [main]  # 当有拉取请求目标为 main 分支时触发
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3  # 检出仓库代码
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16  # 选择 Node.js 版本
+    - name: Install dependencies
+      run: npm install
+    - name: Run tests
+      run: npm test
