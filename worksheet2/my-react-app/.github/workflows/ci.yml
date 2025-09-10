@@ -1,18 +1,18 @@
-name: CI  # 工作流名称，可自定义
+name: CI
 on:
-  pull_request:  # 触发条件：当有“拉取请求（PR）”时触发
-    branches: [main]  # 只对“目标分支为 main”的 PR 生效
+  pull_request:
+    branches: [main]
 jobs:
-  build:  # 定义一个名为“build”的任务
-    runs-on: ubuntu-latest  # 运行在 GitHub 提供的 Ubuntu 虚拟机上
+  build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]  # 要使用的 Node.js 版本（可根据项目需求改，比如 16.x）
-    steps:  # 任务的具体步骤
-    - uses: actions/checkout@v2  # 第一步：拉取仓库代码到虚拟机
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1  # 第二步：安装指定版本的 Node.js
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci  # 第三步：安装项目依赖（ci 是“clean install”，更严格）
-    - run: npm test  # 第四步：运行测试脚本（需项目的 package.json 有 "test" 脚本）
+    - run: npm ci
+    - run: npm test
