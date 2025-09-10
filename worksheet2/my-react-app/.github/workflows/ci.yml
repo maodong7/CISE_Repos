@@ -15,4 +15,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+    - name: Print environment variables
+      run: env
     - run: npm test
